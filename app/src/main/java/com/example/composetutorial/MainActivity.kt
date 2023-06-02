@@ -23,15 +23,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
+@Composable
+fun MyAppPreview() {
+    ComposeTutorialTheme {
+        MyApp(Modifier.fillMaxSize())
+    }
+}
+
 @Composable
 private fun MyApp(
     modifier: Modifier = Modifier
 ) {
-    var shouldShowOnboarding by remember { mutableStateOf(true) }
+    val shouldShowOnboarding = remember { mutableStateOf(true) }
 
     Surface(modifier) {
-        if (shouldShowOnboarding) {
-            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
+        if (shouldShowOnboarding.value) {
+            OnboardingScreen(onContinueClicked = { shouldShowOnboarding.value = false })
         } else {
             Greetings()
         }
@@ -39,9 +47,22 @@ private fun MyApp(
 }
 
 @Composable
+fun OnboardingScreen(onContinueClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Welcome to the Basics Codelab!")
+        Button(modifier = Modifier.padding(vertical = 24.dp), onClick = onContinueClicked) {
+            Text("Continue")
+        }
+    }
+}
+
+@Composable
 private fun Greetings(
-    modifier: Modifier = Modifier,
-    names: List<String> = listOf("World", "Compose")
+    modifier: Modifier = Modifier, names: List<String> = listOf("World", "Compose")
 ) {
     Column(modifier) {
         for (name in names) {
@@ -75,43 +96,18 @@ fun Greeting(name: String) {
     }
 }
 
-
-@Composable
-fun OnboardingScreen(onContinueClicked: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Welcome to the Basics Codelab!")
-        Button(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { onContinueClicked }) {
-            Text("Continue")
-        }
-    }
-}
-
-@Preview
-@Composable
-fun MyAppPreview() {
-    ComposeTutorialTheme {
-        MyApp(Modifier.fillMaxSize())
-    }
-}
-
-@Preview(showBackground = true, widthDp = 320, heightDp = 320)
-@Composable
-fun OnboardingPreview() {
-    ComposeTutorialTheme {
-        OnboardingScreen(onContinueClicked = {})
-    }
-}
-
-@Preview(showBackground = true, widthDp = 320)
-@Composable
-private fun GreetingsPreview() {
-    ComposeTutorialTheme {
-        Greetings()
-    }
-}
+//@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+//@Composable
+//fun OnboardingPreview() {
+//    ComposeTutorialTheme {
+//        OnboardingScreen(onContinueClicked = {})
+//    }
+//}
+//
+//@Preview(showBackground = true, widthDp = 320)
+//@Composable
+//private fun GreetingsPreview() {
+//    ComposeTutorialTheme {
+//        Greetings()
+//    }
+//}
